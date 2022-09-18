@@ -1,4 +1,0 @@
-Informations de la personne n° 1 = toto, prenom: toto, adresse: toto
-------------------------------------------------------------
-Informations de la personne n° 2 = titi, prenom: titi, adresse: titi
-------------------------------------------------------------
