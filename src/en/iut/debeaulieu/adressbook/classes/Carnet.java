@@ -119,4 +119,153 @@ public class Carnet {
         this.AjouterUnePersonne(p8);
         this.AjouterUnePersonne(p9);
     }
+
+    //fontion trier par nom et prenom
+
+    public void trieInsertionParNom() {
+        Personne temp;
+        for (int i = 0; i < this.personneList.length; i++) {
+            for (int j = 0; j < this.personneList.length; j++) {
+                if (this.personneList[i] != null && this.personneList[j] != null) {
+                    if (this.personneList[i].getNom().compareTo(this.personneList[j].getNom()) < 0) {
+                        temp = this.personneList[i];
+                        this.personneList[i] = this.personneList[j];
+                        this.personneList[j] = temp;
+                    }
+                }
+            }
+        }
+    }
+
+    public void trieInsertionParPrenom() {
+        Personne personne;
+        for (int i = 0; i < this.personneList.length; i++) {
+            for (int j = 0; j < this.personneList.length; j++) {
+                if (this.personneList[i] != null && this.personneList[j] != null) {
+                    if (this.personneList[i].getPrenom().compareTo(this.personneList[j].getPrenom()) < 0) {
+                        personne = this.personneList[i];
+                        this.personneList[i] = this.personneList[j];
+                        this.personneList[j] = personne;
+                    }
+                }
+            }
+        }
+    }
+
+    public void trieInsertionParAdresse() {
+        Personne p;
+        for (int i = 0; i < this.personneList.length; i++) {
+            for (int j = 0; j < this.personneList.length; j++) {
+                if (this.personneList[i] != null && this.personneList[j] != null) {
+                    if (this.personneList[i].getAdresse().compareTo(this.personneList[j].getAdresse()) < 0) {
+                        p = this.personneList[i];
+                        this.personneList[i] = this.personneList[j];
+                        this.personneList[j] = p;
+                    }
+                }
+            }
+        }
+    }
+
+    public void trieInsertionParNomEtPrenom() {
+        Personne temp;
+        for (int i = 0; i < this.personneList.length; i++) {
+            for (int j = 0; j < this.personneList.length; j++) {
+                if (this.personneList[i] != null && this.personneList[j] != null) {
+                    if (this.personneList[i].getNom().compareTo(this.personneList[j].getNom()) < 0 || this.personneList[i].getPrenom().compareTo(this.personneList[j].getPrenom()) < 0) {
+                        temp = this.personneList[i];
+                        this.personneList[i] = this.personneList[j];
+                        this.personneList[j] = temp;
+                    }
+                }
+            }
+        }
+    }
+
+    public void rechercheParNom(String recherche) {
+        trieInsertionParNom();
+        int strart = 0;
+        int end = this.personneList.length - 1;
+        int milieu = (strart + end) / 2;
+        while (strart <= end) {
+            if (this.personneList[milieu].getNom().compareTo(recherche) < 0) {
+                strart = milieu;
+            } else if (this.personneList[milieu].getNom().compareTo(recherche) == 0) {
+                System.out.println(this.personneList[milieu].toString());
+                break;
+            } else {
+                end = milieu;
+            }
+            milieu = (strart + end) / 2;
+        }
+        if (strart > end) {
+            System.out.println("Personne non trouvée");
+        }
+    }
+
+    public void RechercheParNomEtPrenom(String recherche) {
+        int min = 0;
+        int max = 0;
+        for (Personne personne : this.personneList) {
+            if (personne != null) max++;
+        }
+        max--;
+        int milieu = (min + max) / 2;
+        while (min <= max) {
+            if (this.personneList[milieu].getNom().compareTo(recherche) < 0 || this.personneList[milieu].getPrenom().compareTo(recherche) < 0) {
+                min = milieu;
+            } else if (this.personneList[milieu].getNom().compareTo(recherche) == 0 || this.personneList[milieu].getPrenom().compareTo(recherche) == 0) {
+                System.out.println(this.personneList[milieu].toString());
+                break;
+            } else {
+                max = milieu;
+            }
+            milieu = (min + max) / 2;
+        }
+        if (min > max) {
+            System.out.println("Personne non trouvée");
+        }
+    }
+
+    public void rechercheParPrenom(String recherche) {
+        trieInsertionParPrenom();
+        int min = 0;
+        int max = this.personneList.length - 1;
+        int milieu = (min + max) / 2;
+        while (min <= max) {
+            if (this.personneList[milieu].getPrenom().compareTo(recherche) < 0) {
+                min = milieu;
+            } else if (this.personneList[milieu].getPrenom().compareTo(recherche) == 0) {
+                System.out.println(this.personneList[milieu].toString());
+                break;
+            } else {
+                max = milieu;
+            }
+            milieu = (min + max) / 2;
+        }
+        if (min > max) {
+            System.out.println("Personne non trouvée");
+        }
+    }
+
+    public void rechercheParAdresse(String recherche) {
+        trieInsertionParAdresse();
+        int min = 0;
+        int max = this.personneList.length - 1;
+        int milieu = (min + max) / 2;
+        while (min <= max) {
+            if (this.personneList[milieu].getAdresse().compareTo(recherche) < 0) {
+                min = milieu;
+            } else if (this.personneList[milieu].getAdresse().compareTo(recherche) == 0) {
+                System.out.println(this.personneList[milieu].toString());
+                break;
+            } else {
+                max = milieu;
+            }
+            milieu = (min + max) / 2;
+        }
+        if (min > max) {
+            System.out.println("Personne non trouvée");
+        }
+    }
 }

@@ -91,13 +91,39 @@ public class Main {
                     break;
 
                 case 4:
-                    if (carnet.personneList[0] == null) {
-                        System.out.println("Il n'y a personne dans le carnet.");
-                    } else {
-                        System.out.println("Veuillez entrer votre recherche :");
-                        String recherche = sc.nextLine();
-                        carnet.rechercheDynamique(recherche);
+                    //menu de recherche
+                    System.out.println("1.Recherche par nom");
+                    System.out.println("2.Recherche par prénom");
+                    System.out.println("3.Recherche par nom et prénom");
+                    System.out.println("4.Recherche par adresse");
+                    int choices = 0;
+                    choices = Integer.parseInt(sc.nextLine());
+                    switch (choices) {
+                        case 1:
+                            System.out.println("Veuillez entrer le nom de la personne que vous recherchez :");
+                            String nomRecherche = sc.nextLine();
+                            carnet.rechercheParNom(nomRecherche);
+                            break;
+                        case 2:
+                            System.out.println("Veuillez entrer le prénom de la personne que vous recherchez :");
+                            String prenomRecherche = sc.nextLine();
+                            carnet.rechercheParPrenom(prenomRecherche);
+                            break;
+                        case 3:
+                            System.out.println("Veuillez entrer le nom de la personne que vous recherchez :");
+                            String rechercheNomPrenom = sc.nextLine();
+                            carnet.RechercheParNomEtPrenom(rechercheNomPrenom);
+                            break;
+                        case 4:
+                            System.out.println("Veuillez entrer l'adresse de la personne que vous recherchez :");
+                            String rechercheAdresse = sc.nextLine();
+                            carnet.rechercheParAdresse(rechercheAdresse);
+                            break;
+
+                        default:
+                            System.out.println("veuillez entrez un nombre entre 1 et 4");
                     }
+                    while (choice != 4) ;
                     break;
 
                 case 5:
