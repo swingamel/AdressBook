@@ -1,7 +1,8 @@
 package en.iut.debeaulieu.adressbook;
 
-import en.iut.debeaulieu.adressbook.classes.Personne;
+import en.iut.debeaulieu.adressbook.classes.BinarySearch;
 import en.iut.debeaulieu.adressbook.classes.Carnet;
+import en.iut.debeaulieu.adressbook.classes.Personne;
 
 import java.util.Scanner;
 
@@ -9,56 +10,57 @@ public class Main {
 
     public static void main(String[] args) {
         Carnet carnet = new Carnet();
-        //POUR JEUX D'ESSAIS
-        carnet.jeuxDeTest();
 
-        Scanner sc = new Scanner(System.in);
+        carnet.jeuxDeTest();
+        Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
         do {
             System.out.println("-----------------Menu-----------------");
-            System.out.println("1.Ajouter une personne dans le carnet");
-            System.out.println("2.Supprimer une personne du carnet");
-            System.out.println("3.Afficher toutes les personnes du carnet");
-            System.out.println("4.Rechercher une personne par nom et prénom");
-            System.out.println("5.Sauvegarder le carnet");
-            System.out.println("6.Charger le carnet");
-            System.out.println("7.Quitter");
-            System.out.println("Taper votre choix :");
-            choice = Integer.parseInt(sc.nextLine());
+            System.out.println("1 : Ajouter une personne au carnet");
+            System.out.println("2 : Supprimer une personne du carnet");
+            System.out.println("3 : Afficher tout le contenu du carnet");
+            System.out.println("4 : Recherche avec critères");
+            System.out.println("5 : Plusieurs critères en une recherche");
+            System.out.println("6 : Recherche dichotomique (un seul résultat)");
+            System.out.println("7 : Trier le carnet avec critères");
+            System.out.println("8 : Sauvegarde du carnet");
+            System.out.println("9 : Importation d'un nouveau carnet");
+            System.out.println("10 : Quitter le programme");
+
+            System.out.print("\nVotre choix : ");
+
+            choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
                 case 1:
-                    String nom = "";
-                    String prenom = "";
-                    String adresse = "";
-
-                    if (carnet.personneList[9] != null) {
-                        System.out.println("Le carnet est plein !");
-                        break;
+                    System.out.println("Ajout d'une personne au carnet");
+                    System.out.println("----------------------------");
+                    System.out.print("Nom : ");
+                    String nom = scanner.nextLine();
+                    System.out.print("Prénom : ");
+                    String prenom = scanner.nextLine();
+                    System.out.print("Adresse : ");
+                    String adresse = scanner.nextLine();
+                    //confirmation de l'ajout
+                    System.out.println("Ajouter la personne suivante ? (oui/non)");
+                    System.out.println("Nom : " + nom);
+                    System.out.println("Prénom : " + prenom);
+                    System.out.println("Adresse : " + adresse);
+                    String choix = scanner.nextLine();
+                    if (choix.equals("oui")) {
+                        carnet.AjouterUnePersonne(new Personne(nom, prenom, adresse));
+                        System.out.println("Personne ajoutée au carnet.");
                     } else {
-                        System.out.println("Veuillez entrer votre nom :");
-                        nom = sc.nextLine();
-                        if (nom.equals("")) {
-                            System.out.println("vous n'avez pas entré de nom.");
-                            break;
-                        }
-                        System.out.println("Veuillez entrer votre prenom :");
-                        prenom = sc.nextLine();
-                        if (prenom.equals("")) {
-                            System.out.println("vous n'avez pas entré de prenom.");
-                            break;
-                        }
-                        System.out.println("Veuillez entrer votre adresse :");
-                        adresse = sc.nextLine();
-                        if (adresse.equals("")) {
-                            System.out.println("vous n'avez pas entré d'adresse.");
-                            break;
-                        }
-
-                        try {
+                        System.out.println("Personne non ajoutée au carnet.");
+                        //demande d'ajout d'une autre personne
+                        System.out.println("Souhaitez-vous ajouter une autre personne ? (oui/non)");
+                        choix = scanner.nextLine();
+                        if (choix.equals("oui")) {
                             carnet.AjouterUnePersonne(new Personne(nom, prenom, adresse));
-                        } catch (Exception var10) {
-                            System.out.println("Erreur!!!");
+                        } else if (choix.equals("non")) {
+                            System.out.println("Retour au menu principal.");
+                        } else {
+                            System.out.println("Choix invalide.");
                         }
                     }
                     break;
@@ -66,89 +68,129 @@ public class Main {
                 case 2:
                     if (carnet.personneList[0] == null) {
                         System.out.println("Le carnet est vide.");
-                        break;
                     } else {
+                        System.out.println("Suppression d'une personne du carnet");
+                        System.out.println("-----------------------------------");
                         carnet.voirCarnet();
-                        System.out.println("Quelle personne voulez-vous supprimer ? (exemple : 0 pour la première personne)");
+                        System.out.println("Quelle personne souhaitez-vous supprimer ? (exemple : 0 pour la première personne)");
                     }
-                    int place = Integer.parseInt(sc.nextLine());
+                    int place = Integer.parseInt(scanner.nextLine());
 
-                    try {
+                    //confirmation de la suppression
+                    System.out.println("Souhaitez vous vraiment supprimer la personne suivante ? (oui/non)");
+                    System.out.println("Nom : " + carnet.personneList[place].getNom());
+                    System.out.println("Prénom : " + carnet.personneList[place].getPrenom());
+                    System.out.println("Adresse : " + carnet.personneList[place].getAdresse());
+                    String choix1 = scanner.nextLine();
+                    if (choix1.equals("oui")) {
                         carnet.supprimerUnePersonne(carnet.personneList[place]);
-                    } catch (Exception e) {
-                        System.out.println("La personne n'existe pas :(");
+                        System.out.println("Personne supprimée du carnet.");
+                    } else if (choix1.equals("non")) {
+                        System.out.println("Personne non supprimée du carnet.");
+                    } else if (carnet.personneList[place] == null) {
+                        System.out.println("Cette personne n'existe pas.");
+                    } else {
+                        System.out.println("Choix invalide.");
                     }
-
-                    System.out.println("Personne supprimée du carnet.");
+                    //demande de suppression d'une autre personne
+                    System.out.println("Souhaitez-vous supprimer une autre personne ? (oui/non)");
+                    choix = scanner.nextLine();
+                    if (choix.equals("oui")) {
+                        carnet.supprimerUnePersonne(carnet.personneList[place]);
+                    } else if (choix.equals("non")) {
+                        System.out.println("Retour au menu principal.");
+                    } else {
+                        System.out.println("Choix invalide.");
+                    }
                     break;
 
                 case 3:
                     if (carnet.personneList[0] == null) {
-                        System.out.println("Il n'y a personne dans le carnet.");
+                        System.out.println("Le carnet est vide.");
                     } else {
+                        System.out.println("Affichage du contenu du carnet");
+                        System.out.println("----------------------------");
                         carnet.voirCarnet();
                     }
                     break;
 
                 case 4:
-                    //menu de recherche
-                    System.out.println("1.Recherche par nom");
-                    System.out.println("2.Recherche par prénom");
-                    System.out.println("3.Recherche par nom et prénom");
-                    System.out.println("4.Recherche par adresse");
-                    int choices = 0;
-                    choices = Integer.parseInt(sc.nextLine());
-                    switch (choices) {
-                        case 1:
-                            System.out.println("Veuillez entrer le nom de la personne que vous recherchez :");
-                            String nomRecherche = sc.nextLine();
-                            carnet.rechercheParNom(nomRecherche);
-                            break;
-                        case 2:
-                            System.out.println("Veuillez entrer le prénom de la personne que vous recherchez :");
-                            String prenomRecherche = sc.nextLine();
-                            carnet.rechercheParPrenom(prenomRecherche);
-                            break;
-                        case 3:
-                            System.out.println("Veuillez entrer le nom de la personne que vous recherchez :");
-                            String rechercheNomPrenom = sc.nextLine();
-                            carnet.RechercheParNomEtPrenom(rechercheNomPrenom);
-                            break;
-                        case 4:
-                            System.out.println("Veuillez entrer l'adresse de la personne que vous recherchez :");
-                            String rechercheAdresse = sc.nextLine();
-                            carnet.rechercheParAdresse(rechercheAdresse);
-                            break;
-
-                        default:
-                            System.out.println("veuillez entrez un nombre entre 1 et 4");
-                    }
-                    while (choice != 4) ;
+                    carnet.rechercheAvecCriteres(carnet.personneList);
                     break;
-
                 case 5:
-                    try {
-                        carnet.sauvegarderCarnet();
-                        System.out.println("Le carnet a été sauvegardé.");
-                    } catch (Exception var10) {
-                        System.out.println("Erreur lors de la sauvegarde.");
+                    System.out.println("Plusieurs critères en une recherche");
+                    System.out.println("----------------------------------");
+                    carnet.recherchePlusieursCriteres();
+                    System.out.println("Souhaitez-vous faire une autre recherche ? (oui/non)");
+                    String choix3 = scanner.nextLine();
+                    if (choix3.equals("oui")) {
+                        carnet.recherchePlusieursCriteres();
+                    } else if (choix3.equals("non")) {
+                        System.out.println("Retour au menu principal.");
+                    } else {
+                        System.out.println("Choix invalide.");
                     }
                     break;
 
                 case 6:
-                    try {
-                        carnet.importer();
-                        System.out.println("Le carnet a été chargé.");
-                    } catch (Exception var10) {
-                        System.out.println("Erreur lors du chargement.");
+                    System.out.println("Recherche dichotomique");
+                    System.out.println("----------------------");
+                    carnet.rechercheDichotomique();
+                    System.out.println("Souhaitez-vous faire une autre recherche ? (oui/non)");
+                    String choix4 = scanner.nextLine();
+                    if (choix4.equals("oui")) {
+                        carnet.rechercheDichotomique();
+                    } else if (choix4.equals("non")) {
+                        System.out.println("Retour au menu principal.");
+                    } else {
+                        System.out.println("Choix invalide.");
                     }
                     break;
 
                 case 7:
-                    try {
-                        System.out.print("Merci d'avoir utilisé notre application. A bientôt !");
-                    } catch (Exception var10) {
-                        System.out.println("Erreur lors de la fermeture.");
+                    System.out.println("Trier le carnet avec critères");
+                    System.out.println("-----------------------------");
+                    carnet.TrieCarnetAvecCritere(carnet.personneList, 0, 0);
+                    carnet.afficherPersonnesListe(carnet.personneList);
+                    System.out.println("Souhaitez-vous faire un autre tri ? (oui/non)");
+                    String choix5 = scanner.nextLine();
+                    if (choix5.equals("oui")) {
+                        carnet.TrieCarnetAvecCritere(carnet.personneList, 0, 0);
+                        carnet.afficherPersonnesListe(carnet.personneList);
+                    } else if (choix5.equals("non")) {
+                        System.out.println("Retour au menu principal.");
+                    } else {
+                        System.out.println("Choix invalide.");
+                    }
+                    break;
+
+                case 8:
+                    System.out.println("Sauvegarde du carnet");
+                    System.out.println("--------------------");
+                    carnet.sauvegarderCarnet();
+                    System.out.println("Souhaitez-vous faire une autre sauvegarde ? (oui/non)");
+                    String choix6 = scanner.nextLine();
+                    if (choix6.equals("oui")) {
+                        carnet.sauvegarderCarnet();
+                    } else if (choix6.equals("non")) {
+                        System.out.println("Retour au menu principal.");
+                    } else {
+                        System.out.println("Choix invalide.");
+                    }
+                    break;
+
+                case 9:
+                    System.out.println("Chargement du carnet");
+                    System.out.println("--------------------");
+                    carnet.importer();
+                    System.out.println("Souhaitez-vous faire un autre chargement ? (oui/non)");
+                    String choix7 = scanner.nextLine();
+                    if (choix7.equals("oui")) {
+                        carnet.importer();
+                    } else if (choix7.equals("non")) {
+                        System.out.println("Retour au menu principal.");
+                    } else {
+                        System.out.println("Choix invalide.");
                     }
                     break;
 
@@ -156,6 +198,6 @@ public class Main {
                     System.out.println("Veuillez entrer un nombre entre 1 et 7 !");
             }
         }
-        while (choice != 7);
+        while (choice != 9);
     }
 }
